@@ -1,0 +1,9 @@
+target/
+.idea/
+*.iml
+.vscode/
+hs_err_pid*
+.classpath
+.project
+.settings/
+*.log

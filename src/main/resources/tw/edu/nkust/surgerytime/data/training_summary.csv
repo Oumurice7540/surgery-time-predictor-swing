@@ -1,0 +1,2 @@
+model_name,algorithm,training_sample_count,validation_sample_count,feature_count,completed_epochs,mae_minutes,rmse_minutes,r_squared,training_duration_millis,data_version
+OR-Time Demo 1.0,規則式模擬迴歸器（非 ML）,1000,10,5,1000,18.4,22.8,0.891,42929,DEMO-2026.08
