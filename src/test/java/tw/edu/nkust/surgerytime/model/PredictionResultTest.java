@@ -13,7 +13,7 @@ class PredictionResultTest {
                 80,
                 120,
                 0.9,
-                "模擬結果"
+                "模型結果"
         ));
     }
 

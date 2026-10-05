@@ -7,17 +7,24 @@
     <groupId>tw.edu.nkust</groupId>
     <artifactId>surgery-time-predictor-swing</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Surgery Time Intelligence Demo - Swing</name>
-    <description>Java 21 Swing application for CSV-backed training results and surgery duration prediction.</description>
+    <name>Surgery Time Intelligence Demo - WEKA BPNN Swing</name>
+    <description>Java 21 Swing application using WEKA BPNN for CSV-backed surgery duration prediction.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
         <junit.version>5.11.4</junit.version>
+        <weka.version>3.8.7</weka.version>
         <exec.mainClass>tw.edu.nkust.surgerytime.Launcher</exec.mainClass>
     </properties>
 
     <dependencies>
+        <!-- WEKA 提供真正的 MultilayerPerceptron，也就是反向傳播類神經網路。 -->
+        <dependency>
+            <groupId>nz.ac.waikato.cms.weka</groupId>
+            <artifactId>weka-stable</artifactId>
+            <version>${weka.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -66,6 +73,39 @@
                 <configuration>
                     <mainClass>${exec.mainClass}</mainClass>
                 </configuration>
+            </plugin>
+
+            <!-- 將 WEKA 及其相依套件一併放進可執行 JAR，使用者不必另外安裝 WEKA。 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>tw.edu.nkust.surgerytime.Launcher</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
