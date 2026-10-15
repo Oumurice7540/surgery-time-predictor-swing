@@ -1,6 +1,20 @@
+## 2026-10-14：底部狀態文字裁切修正
+
+ApplicationShellView 移除狀態列固定 30px 高度，改由字體與邊框自動計算；縮減上下留白並以 BorderLayout 配置狀態文字，避免原本僅剩 11px 的內容高度。資料處理頁新排版保留。新版目錄／ZIP：`output/exe/SurgeryTimePredictor-1.7.0-textfix-20261014`，前版保留。
+
+驗證：`target/footer-text-verify.log`；九頁渲染沿用 `target/algorithm-preview/parity-min-*.png`。
+
+## 2026-10-14：資料處理頁依原版截圖重排
+
+僅修改第四頁介面：左側七個直排工具（IQR、刪除特定值、刪欄、選取特定值、數值化、0～1、Z 分數），中央逐列處理流程及底部儲存／載入／預覽，右側上下處理前後表格。各流程列可直接改欄位／條件、排序與移除；範圍、包含文字、空白等完整操作仍在「詳細條件編輯」。保留套用確認、執行紀錄、探索與正式訓練的區分。配色與全程九頁導覽沿用目前程式。
+
+修改：`DataProcessingView.java`、`DataProcessingViewTest.java`。新增工具列操作／條件修改／排序移除驗證；版面斷言改為檢查按鈕位於實際視窗範圍。完整測試與渲染紀錄：`target/processing-layout-verify.log`、`target/algorithm-preview/parity-min-DATA_PROCESSING.png`。
+
+交付：`output/exe/SurgeryTimePredictor-1.7.0-processing-layout-20261014/SurgeryTimePredictor.exe` 與同名 `.zip`，原 1.7.0 目錄與 ZIP 保留。此為 1.7.0 的介面修訂，視窗版本號維持 1.7.0。
+
 # GitHub 下載
 
-[下載 Windows x64 v1.7.0 可攜版](https://github.com/Oumurice7540/surgery-time-predictor-swing/releases/tag/v1.7.0)。完整解壓後執行 SurgeryTimePredictor.exe，並保留旁邊的 app 與 runtime 資料夾。原始碼建置方式見下方說明。
+[下載 Windows x64 最新介面修正版](https://github.com/Oumurice7540/surgery-time-predictor-swing/releases/tag/v1.7.0-textfix-20261014)。完整解壓後執行 SurgeryTimePredictor.exe，並保留旁邊的 app 與 runtime 資料夾。原始碼建置方式見下方說明。
 
 ## 1.7.0 交付（2026-10-05）
 

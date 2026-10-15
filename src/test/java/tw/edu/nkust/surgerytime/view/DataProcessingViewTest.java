@@ -60,6 +60,25 @@ class DataProcessingViewTest {
             assertThrows(IllegalArgumentException.class,()->view.installRecipe(new DataProcessingService.Recipe("麻醉時間",List.of())));
         });
     }
+    @Test void referenceToolbarInlineEditReorderAndDelete() throws Exception {
+        var service = new SurgeryModelService(new SyntheticSurgeryDataService(dir.resolve("toolbar.csv")));
+        service.generateData(new TrainingConfiguration(400,.8,123L,8,50,.2,.1,.9));
+        SwingUtilities.invokeAndWait(() -> {
+            var view = new DataProcessingView(service, x -> {}, () -> {});
+            ((JButton)find(view,"processing-tool-REMOVE_EQUALS")).doClick();
+            var input = (JTextField)find(view,"processing-row-0-value");
+            input.setText("999"); input.postActionEvent();
+            var table = (JTable)find(view,"processing-steps"); assertEquals("999",table.getValueAt(0,3));
+            ((JButton)find(view,"processing-tool-MIN_MAX")).doClick();
+            assertEquals(2,table.getRowCount());
+            ((JButton)find(view,"processing-row-1-↑")).doClick();
+            assertEquals(ProcessingStep.Operation.MIN_MAX,table.getValueAt(0,1));
+            ((JButton)find(view,"processing-row-0-×")).doClick();
+            assertEquals(1,table.getRowCount()); assertEquals("999",table.getValueAt(0,3));
+            render(view,"reference-toolbar.png",1100,620);
+            assertEquals(400,service.generatedDataCount());
+        });
+    }
     static void await(java.util.function.BooleanSupplier condition) throws Exception {
         long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(10);
         while(System.nanoTime()<deadline) {
@@ -72,7 +91,7 @@ class DataProcessingViewTest {
     static void render(JComponent c,String name,int w,int h) {
         try {
             c.setSize(w,h); layout(c); layout(c);
-            Component button=find(c,"preview-processing"); if(button!=null) { var position=SwingUtilities.convertPoint(button,0,0,c); assertTrue(position.y<600, "Editor controls must remain visible"); }
+            Component button=find(c,"preview-processing"); if(button!=null) { var position=SwingUtilities.convertPoint(button,0,0,c); assertTrue(position.y >= 0 && position.y + button.getHeight() <= h, "Editor controls must remain inside the visible viewport"); }
             var image=new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB); var g=image.createGraphics(); c.printAll(g); g.dispose();
             Path path=Path.of("target/processing-preview"); Files.createDirectories(path); javax.imageio.ImageIO.write(image,"png",path.resolve(name).toFile());
         } catch(Exception e) { throw new RuntimeException(e); }

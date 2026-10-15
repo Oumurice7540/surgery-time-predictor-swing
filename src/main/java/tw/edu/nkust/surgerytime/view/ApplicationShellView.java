@@ -222,17 +222,17 @@ public final class ApplicationShellView extends JPanel {
     }
 
     private JPanel buildFooter() {
-        var footer = new JPanel(new BorderLayout());
+        var footer = new JPanel(new BorderLayout(12, 0));
         footer.setBackground(Color.WHITE);
         footer.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 0, 0, 0, UiTheme.BORDER), UiTheme.padding(9, 28, 9, 28)));
-        var status = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+                BorderFactory.createMatteBorder(1, 0, 0, 0, UiTheme.BORDER), UiTheme.padding(6, 20, 6, 20)));
+        var status = new JPanel(new BorderLayout(8, 0));
         status.setOpaque(false);
-        status.add(UiTheme.label("●", 9f, Font.BOLD, UiTheme.TEAL));
-        status.add(footerStatus);
-        footer.add(status, BorderLayout.WEST);
+        status.add(UiTheme.label("●", 9f, Font.BOLD, UiTheme.TEAL), BorderLayout.WEST);
+        status.add(footerStatus, BorderLayout.CENTER);
+        footer.add(status, BorderLayout.CENTER);
         footer.add(footerPage, BorderLayout.EAST);
-        footer.setPreferredSize(new Dimension(900, 30));
+        // Let the font metrics and border determine height; 30px previously left only 11px for text.
         return footer;
     }
 
